@@ -11,14 +11,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export type Payment = {
-    id: string
-    active: boolean
-    status: "pending" | "processing" | "success" | "failed"
+export type Customers = {
+    id: number
+    active: number
+    name: string
     email: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Customers>[] = [
     // ✅ Checkbox
     {
         id: "select",
@@ -44,8 +44,8 @@ export const columns: ColumnDef<Payment>[] = [
 
     // ✅ Status
     {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "name",
+        header: "Nome",
     },
 
     // ✅ Email com ordenação

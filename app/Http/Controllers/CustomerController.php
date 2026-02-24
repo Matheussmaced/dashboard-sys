@@ -6,7 +6,7 @@ use App\Models\Customer;
 use App\Services\CustomerService;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
-use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -17,35 +17,50 @@ class CustomerController extends Controller
         $this->customerService = $customerService;
     }
 
-    // READ (listagem)
-    public function index()
+    /**
+     * LISTAGEM - retorna todos os clientes
+     */
+   public function index()
     {
-        $customers = $this->customerService->getAll();
-
-         return response()->json(Customer::all());
+        $customers = Customer::all(['id', 'name', 'email', 'active']); // garante que active seja retornado
+        return response()->json($customers);
     }
 
-    // CREATE
+    /**
+     * CREATE - cria um novo cliente
+     */
     public function store(StoreCustomerRequest $request)
     {
-        $this->customerService->store($request->validated());
+        $customer = $this->customerService->store($request->validated());
 
-        return redirect()->back()->with('success', 'Customer created successfully');
+        return response()->json($customer, 201); // retorna o cliente criado em JSON
     }
 
-    // UPDATE
+    /**
+     * UPDATE - atualiza um cliente existente
+     */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $this->customerService->update($customer, $request->validated());
+        $customer = $this->customerService->update($customer, $request->validated());
 
-        return redirect()->back()->with('success', 'Customer updated successfully');
+        return response()->json($customer); // retorna o cliente atualizado
     }
 
-    // DELETE
+    /**
+     * DELETE - remove um cliente
+     */
     public function destroy(Customer $customer)
     {
         $this->customerService->delete($customer);
 
-        return redirect()->back()->with('success', 'Customer deleted successfully');
+        return response()->json(['message' => 'Cliente deletado com sucesso']);
+    }
+
+    /**
+     * SHOW - retorna um cliente específico (opcional, mas útil)
+     */
+    public function show(Customer $customer)
+    {
+        return response()->json($customer);
     }
 }
