@@ -9,17 +9,14 @@ class CustomerService
     public function getAll(){
         return Customer::select('id', 'name', 'email')->get();
     }
-    public function store(array $data){
-        if(isset($data['password'])){
-            $data['password'] = bcrypt($data['password']);
-        }
-        return Customer::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => $data['password'] ?? null,
-            'active' => $data['active'] ?? true,
-        ]);
-    }
+   public function store(array $data)
+{
+    return Customer::create([
+        'name'   => $data['name'],
+        'email'  => $data['email'],
+        'active' => $data['active'] ?? true,
+    ]);
+}
     public function update(Customer $customer, array $data){
         if(isset($data['password'])){
             $data['password'] = bcrypt($data['password']);
