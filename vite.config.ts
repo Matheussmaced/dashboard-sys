@@ -10,6 +10,8 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
+            // força usar URL do APP_URL em produção
+            publicDirectory: 'public',
         }),
         react({
             babel: {
@@ -21,6 +23,7 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+    base: '/', // garante caminhos relativos para o build
     esbuild: {
         jsx: 'automatic',
     },
