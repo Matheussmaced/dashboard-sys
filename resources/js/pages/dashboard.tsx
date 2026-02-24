@@ -5,8 +5,8 @@ import { columns, type Payment } from '@/components/payments/columns';
 import { DataTable } from '@/components/payments/data-table';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
+import { dashboard } from '@/routes';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
