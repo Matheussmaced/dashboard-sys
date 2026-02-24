@@ -22,9 +22,7 @@ class CustomerController extends Controller
     {
         $customers = $this->customerService->getAll();
 
-        return Inertia::render('Customers/Index', [
-            'customers' => $customers
-        ]);
+         return response()->json(Customer::all());
     }
 
     // CREATE
