@@ -1,6 +1,6 @@
 
+import { Label } from "@radix-ui/react-dropdown-menu";
 import type {
-    ColumnDef,
     SortingState,
     ColumnFiltersState,
     VisibilityState
@@ -33,16 +33,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-}
+import { FormModal } from "../createUserModal";
+import type { DataTableProps } from "./types";
 
 export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
+    const [open, setOpen] = React.useState(false)
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([])
@@ -72,39 +70,42 @@ export function DataTable<TData, TValue>({
     return (
         <div className="w-full">
             {/* Top Controls */}
-            <div className="flex items-center py-4 gap-2">
-                <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
+            <div className="flex items-center py-4 gap-2 justify-between">
+                <div className="flex items-center gap-2">
+                    <Input
+                        placeholder="Filter emails..."
+                        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn("email")?.setFilterValue(event.target.value)
+                        }
+                        className="max-w-sm"
+                    />
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline">Colunas</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">Colunas</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                column.toggleVisibility(!!value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <Button variant='secondary' onClick={() => setOpen(true)}>Adicionar cliente</Button>
             </div>
 
             {/* Table */}
@@ -177,6 +178,27 @@ export function DataTable<TData, TValue>({
                     </Button>
                 </div>
             </div>
+
+            <FormModal
+                open={open}
+                onOpenChange={setOpen}
+                title="Adicionar Cliente"
+                description="Preencha os dados abaixo"
+                onSubmit={() => {
+                    console.log("Salvar cliente")
+                    setOpen(false)
+                }}
+            >
+                <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input placeholder="Digite o email" />
+                </div>
+
+                <div className="space-y-2">
+                    <Label>Senha</Label>
+                    <Input type="password" placeholder="Digite a senha" />
+                </div>
+            </FormModal>
         </div>
     )
 }
