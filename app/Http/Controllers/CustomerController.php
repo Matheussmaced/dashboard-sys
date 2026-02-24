@@ -3,63 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use Illuminate\Http\Request;
+use App\Services\CustomerService;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected CustomerService $customerService;
+
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
+
+    // READ (listagem)
     public function index()
     {
-        //
+        $customers = $this->customerService->getAll();
+
+        return Inertia::render('Customers/Index', [
+            'customers' => $customers
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // CREATE
+    public function store(StoreCustomerRequest $request)
     {
-        //
+        $this->customerService->store($request->validated());
+
+        return redirect()->back()->with('success', 'Customer created successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // UPDATE
+    public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $this->customerService->update($customer, $request->validated());
+
+        return redirect()->back()->with('success', 'Customer updated successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    // DELETE
     public function destroy(Customer $customer)
     {
-        //
+        $this->customerService->delete($customer);
+
+        return redirect()->back()->with('success', 'Customer deleted successfully');
     }
 }
