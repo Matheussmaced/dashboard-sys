@@ -5,8 +5,8 @@ import { columns, type Payment } from '@/components/payments/columns';
 import { DataTable } from '@/components/payments/data-table';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
 import { dashboard } from '@/routes';
+import type { BreadcrumbItem } from '@/types';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -17,80 +17,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 async function getData(): Promise<Payment[]> {
-    return [
-        {
-            id: "728ed52f",
-            active: true,
-            status: "pending",
-            email: "m@example.com",
+    const response = await fetch('/customers', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
         },
-        {
-            id: "2",
-            active: false,
-            status: "pending",
-            email: "v@example.com",
-        },
-        {
-            id: "3",
-            active: true,
-            status: "success",
-            email: "g@example.com",
-        },
-        {
-            id: "4",
-            active: true,
-            status: "pending",
-            email: "f@example.com",
-        },
-        {
-            id: "5",
-            active: false,
-            status: "pending",
-            email: "z@example.com",
-        },
-        {
-            id: "7",
-            active: true,
-            status: "success",
-            email: "z@example.com",
-        },
-        {
-            id: "20",
-            active: true,
-            status: "pending",
-            email: "m@example.com",
-        },
-        {
-            id: "50",
-            active: false,
-            status: "pending",
-            email: "v@example.com",
-        },
-        {
-            id: "30",
-            active: true,
-            status: "success",
-            email: "g@example.com",
-        },
-        {
-            id: "22",
-            active: true,
-            status: "pending",
-            email: "f@example.com",
-        },
-        {
-            id: "33",
-            active: false,
-            status: "pending",
-            email: "z@example.com",
-        },
-        {
-            id: "66",
-            active: true,
-            status: "success",
-            email: "z@example.com",
-        },
-    ]
+        credentials: 'include', // envia o cookie da sessão
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        console.error(text);
+        throw new Error('Erro ao buscar customers');
+    }
+
+    return response.json();
 }
 
 export default function Dashboard() {
