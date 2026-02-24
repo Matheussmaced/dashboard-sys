@@ -10,7 +10,6 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
-            // força usar URL do APP_URL em produção
             publicDirectory: 'public',
         }),
         react({
@@ -19,11 +18,9 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+        wayfinder({ formVariants: true }),
     ],
-    base: '/', // garante caminhos relativos para o build
+    base: '/build/', // importante para produção no Laravel
     esbuild: {
         jsx: 'automatic',
     },
