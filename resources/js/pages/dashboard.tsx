@@ -14,7 +14,7 @@ import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: dashboard().url },
+    { title: 'Clientes', href: dashboard().url },
 ];
 
 type Customer = {
@@ -117,7 +117,7 @@ export default function Dashboard() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Clientes" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 {/* Placeholder cards */}
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">

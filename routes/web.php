@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -13,6 +14,11 @@ Route::get('/', function () {
 Route::get('dashboard', function () {
     return Inertia::render('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::get('financial', function () {
+    return Inertia::render('financial');
+})->middleware(['auth', 'verified'])->name('financial');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/customers', [CustomerController::class, 'index']);
